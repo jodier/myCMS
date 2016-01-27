@@ -378,7 +378,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$size = file_put_contents("$temp_dir/myCMS-master.zip", $fp);
+		$nb = file_put_contents("$temp_dir/myCMS-master.zip", $fp);
 
 		if($nb === FALSE)
 		{
