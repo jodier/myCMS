@@ -365,6 +365,10 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
+		$temp_dir = sys_get_temp_dir();
+
+		/*---------------------------------------------------------*/
+
 		$fp = fopen('https://github.com/jodier/myCMS/archive/master.zip', 'r');
 
 		if($fp === FALSE)
@@ -374,9 +378,12 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$temp_dir = sys_get_temp_dir();
-
 		$size = file_put_contents("$temp_dir/myCMS-master.zip", $fp);
+
+		if($nb === FALSE)
+		{
+			die('<html><body>could not write myCMS</body></html>');
+		}
 
 		/*---------------------------------------------------------*/
 
@@ -384,7 +391,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		die("<html><body><pre>$stdout</pre>done with success ($size bytes)</body></html>");
+		die("<html><body><pre>$stdout</pre>done with success ($nb bytes)</body></html>");
 	}
 
 	/*-----------------------------------------------------------------*/
