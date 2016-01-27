@@ -365,10 +365,6 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$temp_dir = sys_get_temp_dir();
-
-		/*---------------------------------------------------------*/
-
 		$fp = fopen('https://github.com/jodier/myCMS/archive/master.zip', 'r');
 
 		if($fp === FALSE)
@@ -378,7 +374,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$nb = file_put_contents("$temp_dir/myCMS-master.zip", $fp);
+		$nb = file_put_contents('./tmp/myCMS-master.zip', $fp);
 
 		if($nb === FALSE)
 		{
@@ -387,7 +383,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$stdout = shell_exec("unzip -o -d $temp_dir $temp_dir/myCMS-master.zip && cp -Rv $temp_dir/myCMS-master/* .");
+		$stdout = shell_exec('unzip -o -d ./tmp ./tmp/myCMS-master.zip && cp -Rv ./tmp/myCMS-master/* . && rm -fr ./tmp/*');
 
 		/*---------------------------------------------------------*/
 
