@@ -1,0 +1,179 @@
+/*-------------------------------------------------------------------------*/
+
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:300,300italic,400,400italic,600,600italic);
+@import url(https://fonts.googleapis.com/css?family=Ubuntu+Mono:300,300italic,400,400italic,600,600italic);
+
+/*-------------------------------------------------------------------------*/
+
+body {
+	background-color: #F5F5F5;
+}
+
+/*-------------------------------------------------------------------------*/
+
+figure {
+	display: table;
+	margin: 20px auto 20px auto;
+}
+
+figure img {
+	display: block;
+	height: auto;
+	width: 100%;
+}
+
+/*-------------------------------------------------------------------------*/
+
+textarea {
+	resize: none;
+}
+
+/*-------------------------------------------------------------------------*/
+
+#admin_navbar {
+	border-bottom: 1px solid #E7E7E7;
+	clear: both;
+	height: 50px;
+	line-height: 49px;
+	margin: 00px 00px;
+	padding: 00px 14px;
+}
+
+/*-------------------------------------------------------------------------*/
+
+#admin_main {
+	background-color: #FFFFFF;
+	border-left: 1px solid #E7E7E7;
+	overflow: scroll;
+}
+
+/*-------------------------------------------------------------------------*/
+
+.modal-lg {
+	width: 90%;
+}
+
+/*-------------------------------------------------------------------------*/
+
+.toggle, .toggle-on, .toggle-off {
+	border-radius: 20px;
+}
+
+.toggle .toggle-handle {
+	border-radius: 20px;
+}
+
+/*-------------------------------------------------------------------------*/
+
+.callout {
+	border-color: #E7E7E7;
+	-webkit-border-radius: 4px;
+	-moz-border-radius: 4px;
+	border-radius: 4px;
+	border-style: solid;
+	border-width: 1px 1px 1px 5px;
+	display: none;
+	margin: 00px 00px 10px 00px;
+	padding: 10px 10px 10px 10px;
+}
+
+/*-------------------------------------------------------------------------*/
+
+#categoryAdder,
+#pageAdder,
+#articleAdder,
+#menuAdder {
+	margin-top: -10px;
+}
+
+/*-------------------------------------------------------------------------*/
+
+#drop_zone {
+	color: #BBBBBB;
+	border: 2px dashed #BBBBBB;
+	-webkit-border-radius: 5px;
+	-moz-border-radius: 5px;
+	border-radius: 5px;
+	margin-bottom: 15px;
+	padding: 23.5px;
+	text-align: center;
+}
+
+#drop_zone:hover {
+	box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.075) inset, 0px 0px 8px rgba(102, 175, 233, 0.6);
+}
+
+/*-------------------------------------------------------------------------*/
+
+.markdown-editor {
+	clear: both;
+	height: 325px;
+	overflow: auto;
+	position: relative;
+	width: 100%;
+}
+
+.markdown-editor h1,
+.markdown-editor h2,
+.markdown-editor h3,
+.markdown-editor h4,
+.markdown-editor h5 {
+	font-family: "Open Sans Light", "sans-serif";
+}
+
+.markdown-editor p,
+.markdown-editor td,
+.markdown-editor th,
+.markdown-editor li,
+.markdown-editor div,
+.markdown-editor span,
+.markdown-editor blockquote,
+.markdown-editor figcaption {
+	font-family: "Open Sans", "sans-serif";
+	font-size: 11.5pt;
+}
+
+.markdown-editor > textarea.editor {
+	background-color: #FFFFFF;
+	border: 1px solid #CCCCCC;
+	border-radius: 4px 0px 0px 4px;
+	font-family: "Ubuntu Mono", "Menlo", "Monaco", "monospace";
+	height: 100%;
+	width: 50%;
+	min-width: 0;
+	left: 0;
+	overflow: scroll;
+	padding: 10px;
+	position: absolute;
+}
+
+.markdown-editor > div.viewer {
+	background-color: #F5F5F5;
+	border: 1px solid #CCCCCC;
+	border-radius: 0px 4px 4px 0px;
+	font-family: "Open Sans", "sans-serif";
+	height: 100%;
+	width: 50%;
+	min-width: 0;
+	right: 0;
+	overflow: scroll;
+	padding: 10px;
+	position: absolute;
+}
+
+.markdown-editor > div.viewer span.glyphicon {
+	font-family: "Glyphicons Halflings";
+}
+
+.markdown-editor > div.viewer p {
+	text-align: justify;
+}
+
+.markdown-editor > div.btn-group-vertical {
+	position: absolute;
+	opacity: 0.75;
+	right: 10px;
+	top: 10px;
+}
+
+/*-------------------------------------------------------------------------*/
