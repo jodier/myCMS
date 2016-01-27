@@ -363,17 +363,28 @@ class TMyCMS
 			die('<html><body>not authorized</body></html>');
 		}
 
-		try
+		/*---------------------------------------------------------*/
+
+		$fp = fopen('https://github.com/jodier/myCMS/archive/master.zip', 'r');
+
+		if($fp === FALSE)
 		{
-
-
-
-			die('<html><body>done with success</body></html>');
+			die('<html><body>could not download myCMS</body></html>');
 		}
- 		catch(Exception $e)
-		{
-			die("<html><body><pre>$e</pre></body></html>");
-		}
+
+		/*---------------------------------------------------------*/
+
+		$temp_dir = sys_get_temp_dir();
+
+		$size = file_put_contents("$temp_dir/myCMS-master.zip", $fp);
+
+		/*---------------------------------------------------------*/
+
+		$stdout = shell_exec("unzip -o -d $temp_dir $temp_dir/myCMS-master.zip && cp -Rv $temp_dir/myCMS-master/* .");
+
+		/*---------------------------------------------------------*/
+
+		die("<html><body><pre>$stdout</pre>done with success ($size bytes)</body></html>");
 	}
 
 	/*-----------------------------------------------------------------*/
