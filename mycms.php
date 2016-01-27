@@ -387,7 +387,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		die("<html><body><pre>$stdout</pre>done with success ($nb bytes)</body></html>");
+		die("<html><body><pre>$stdout</pre>done with success</body></html>");
 	}
 
 	/*-----------------------------------------------------------------*/
