@@ -345,11 +345,11 @@ class TMyCMS
 			$this->pdo->exec('ALTER TABLE `menus` ADD CONSTRAINT `FK3` FOREIGN KEY (`parent`) REFERENCES `menus` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;');
 			$this->pdo->exec('ALTER TABLE `menus` ADD CONSTRAINT `FK4` FOREIGN KEY (`page`) REFERENCES `pages` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;');
 
-			die('<html><body>done with success</body></html>');
+			die('<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body>done with success</body></html>');
 		}
  		catch(Exception $e)
 		{
-			die("<html><body><pre>$e</pre></body></html>");
+			die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre>$e</pre></body></html>");
 		}
 	}
 
@@ -369,7 +369,7 @@ class TMyCMS
 
 		if($fp === FALSE)
 		{
-			die('<html><body>could not download myCMS</body></html>');
+			die('<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body>could not download myCMS</body></html>');
 		}
 
 		/*---------------------------------------------------------*/
@@ -378,7 +378,7 @@ class TMyCMS
 
 		if($nb === FALSE)
 		{
-			die('<html><body>could not write myCMS</body></html>');
+			die('<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body>could not write myCMS</body></html>');
 		}
 
 		/*---------------------------------------------------------*/
@@ -387,7 +387,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		die("<html><body><pre>$stdout</pre>done with success</body></html>");
+		die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre>$stdout</pre>done with success</body></html>");
 	}
 
 	/*-----------------------------------------------------------------*/
