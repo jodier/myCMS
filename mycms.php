@@ -383,11 +383,13 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$stdout = shell_exec('unzip -o -d ./tmp ./tmp/myCMS-master.zip && cp -Rv ./tmp/myCMS-master/* . && rm -fr ./tmp/*');
+		$stdout = $this->escapeHTML(
+			shell_exec('unzip -o -d ./tmp ./tmp/myCMS-master.zip && cp -Rv ./tmp/myCMS-master/* . && rm -fr ./tmp/*')
+		);
 
 		/*---------------------------------------------------------*/
 
-		die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre><![CDATA[$stdout]]></pre>done with success</body></html>");
+		die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre>$stdout</pre>done with success</body></html>");
 	}
 
 	/*-----------------------------------------------------------------*/
