@@ -789,8 +789,13 @@ else
 						<div class="col-md-6">
 							<p><i class="fa fa-chevron-right"></i> Force HTTPS: <input type="checkbox" data-toggle="toggle" data-width="80" /></p>
 
+							<p><i class="fa fa-chevron-right"></i> Description: <br /><input type="text" class="form-control" placeholder="Description" /></p>
+
+							<p><i class="fa fa-chevron-right"></i> Author: <br /><input type="text" class="form-control" placeholder="Author" /></p>
 						</div>
 					</div>
+
+					<div class="text-right"><button type="button" class="btn btn-default">Apply</button></div>
 <?php
 }
 
