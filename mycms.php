@@ -272,7 +272,8 @@ class TMyCMS
 				'  `alias` varchar(128) NOT NULL,' .
 				'  `title` varchar(128) NOT NULL,' .
 				'  `icon` varchar(128) NOT NULL,' .
-				'  `rank` int(11) NOT NULL DEFAULT \'0\'' .
+				'  `rank` int(11) NOT NULL DEFAULT \'0\',' .
+				'  `visible` int(1) NOT NULL DEFAULT \'0\'' .
 				') ENGINE=InnoDB DEFAULT CHARSET=utf8'
 			);
 
@@ -419,7 +420,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("INSERT INTO categories (alias, title, rank) VALUES ('$alias', '$title', '$rank')");
+		$this->pdo->exec("INSERT INTO categories (alias, title, rank, visible) VALUES ('$alias', '$title', '$rank', 0)");
 
 		/*---------------------------------------------------------*/
 	}
@@ -441,8 +442,9 @@ class TMyCMS
 		$alias = $this->escapeSQL($this->getParam('categoryAlias'));
 		$title = $this->escapeSQL($this->getParam('categoryTitle'));
 		$rank = $this->escapeSQL($this->getParam('categoryRank'));
+		$visible = $this->escapeSQL($this->getParam('categoryVisible', '0'));
 
-		if($id === '' || $alias === '' || $title === '' || $rank === '')
+		if($id === '' || $alias === '' || $title === '' || $rank === '' || $visible === '')
 		{
 			$this->error = 'missing parameter(s)';
 
@@ -451,7 +453,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("UPDATE categories SET alias='$alias', title='$title', rank='$rank' WHERE id='$id'");
+		$this->pdo->exec("UPDATE categories SET alias='$alias', title='$title', rank='$rank', visible='$visible' WHERE id='$id'");
 
 		/*---------------------------------------------------------*/
 	}
@@ -1176,7 +1178,7 @@ class TMyCMS
 
 			if($categories === '')
 			{
-				foreach($this->getCategories() as $category)
+				foreach($this->getCategories(['visible' => '1']) as $category)
 				{
 					$alias = $this->escapeHTML($category['alias']);
 					$title = $this->escapeHTML($category['title']);

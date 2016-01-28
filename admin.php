@@ -147,6 +147,7 @@ $mode = $cms->getParam('mode');
 								<th>Alias</th>
 								<th>Title</th>
 								<th>Rank</th>
+								<th>Visible</th>
 								<th></th>
 								<th></th>
 							</tr>
@@ -159,11 +160,13 @@ foreach($cms->getCategories() as $key => $val)
 	$alias = $cms->escapeHTML($val['alias']);
 	$title = $cms->escapeHTML($val['title']);
 	$rank = $cms->escapeHTML($val['rank']);
+	$visible = $cms->escapeHTML($val['visible']);
 
 	print("\t\t\t\t\t\t\t<tr>\n");
 	print("\t\t\t\t\t\t\t\t<td><a href=\"/categories/$alias\" target=\"_blank\">$alias</a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$title</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$rank</td>\n");
+	print("\t\t\t\t\t\t\t\t<td>$visible</td>\n");
 	print("\t\t\t\t\t\t\t\t<td><a href=\"javascript:editCategory($id);\"><i class=\"fa fa-pencil text-primary\"></i></a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td><a href=\"javascript:delCategory($id);\"><i class=\"fa fa-trash text-danger\"></i></a></td>\n");
 	print("\t\t\t\t\t\t\t</tr>\n");
