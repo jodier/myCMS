@@ -387,7 +387,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre>$stdout</pre>done with success</body></html>");
+		die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre><![CDATA[$stdout]]></pre>done with success</body></html>");
 	}
 
 	/*-----------------------------------------------------------------*/
