@@ -778,11 +778,19 @@ else
 
 					</div>
 
-					<p><i class="fa fa-chevron-right"></i> <a href="admin.php?setupDB">Setup DB</a></p>
+					<div class="row">
+						<div class="col-md-6">
+							<p><i class="fa fa-chevron-right"></i> <a href="admin.php?setupDB">Setup DB</a></p>
 
-					<p><i class="fa fa-chevron-right"></i> <a href="admin.php?upgradeCMS">Upgrade CMS</a></p>
+							<p><i class="fa fa-chevron-right"></i> <a href="admin.php?upgradeCMS">Upgrade CMS</a></p>
 
-					<p><i class="fa fa-chevron-right"></i> <a href="http://www.odier.eu/" target="_blank">By Jérôme ODIER</a></p>
+							<p><i class="fa fa-chevron-right"></i> <a href="http://www.odier.eu/" target="_blank">By Jérôme ODIER</a></p>
+						</div>
+						<div class="col-md-6">
+							<p><i class="fa fa-chevron-right"></i> Force HTTPS: <input type="checkbox" data-toggle="toggle" data-width="80" /></p>
+
+						</div>
+					</div>
 <?php
 }
 
