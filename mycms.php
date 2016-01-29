@@ -694,10 +694,10 @@ class TMyCMS
 		else
 		{
 			if($parent === '') {
-				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', NULL, '$title', '$rank', '$page', '$link')");
+				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', NULL, '$title', '$rank', '1', '$link')");
 			}
 			else {
-				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', '$parent', '$title', '$rank', '$page', '$link')");
+				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', '$parent', '$title', '$rank', '1', '$link')");
 			}
 		}
 
