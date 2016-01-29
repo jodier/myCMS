@@ -163,7 +163,7 @@ foreach($cms->getCategories() as $key => $val)
 	$visible = $cms->escapeHTML($val['visible']);
 
 	print("\t\t\t\t\t\t\t<tr>\n");
-	print("\t\t\t\t\t\t\t\t<td><a href=\"/categories/$alias\" target=\"_blank\"><i class="fa fa-link"></i> $alias</a></td>\n");
+	print("\t\t\t\t\t\t\t\t<td><a href=\"/categories/$alias\" target=\"_blank\"><i class=\"fa fa-link\"></i> $alias</a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$title</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$rank</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$visible</td>\n");
@@ -256,7 +256,7 @@ foreach($cms->getPages() as $key => $val)
 	$visible = $cms->escapeHTML($val['visible']);
 
 	print("\t\t\t\t\t\t\t<tr>\n");
-	print("\t\t\t\t\t\t\t\t<td><a href=\"/pages/$alias\" target=\"_blank\"><i class="fa fa-link"></i> $alias</a></td>\n");
+	print("\t\t\t\t\t\t\t\t<td><a href=\"/pages/$alias\" target=\"_blank\"><i class=\"fa fa-link\"></i> $alias</a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$title</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$visible</td>\n");
 	print("\t\t\t\t\t\t\t\t<td><a href=\"javascript:editPage($id);\"><i class=\"fa fa-pencil text-primary\"></i></a></td>\n");
@@ -358,7 +358,7 @@ foreach($cms->getArticles() as $key => $val)
 	$visible = $cms->escapeHTML($val['visible']);
 
 	print("\t\t\t\t\t\t\t<tr>\n");
-	print("\t\t\t\t\t\t\t\t<td><a href=\"/articles/$alias\" target=\"_blank\"><i class="fa fa-link"></i> $alias</a></td>\n");
+	print("\t\t\t\t\t\t\t\t<td><a href=\"/articles/$alias\" target=\"_blank\"><i class=\"fa fa-link\"></i> $alias</a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td><a href=\"/categories/$category\" target=\"_blank\">$category</a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$title</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$visible</td>\n");
@@ -506,7 +506,7 @@ foreach($cms->getMenus() as $key => $val)
 
 	print("\t\t\t\t\t\t\t<tr>\n");
 	print("\t\t\t\t\t\t\t\t<td>$alias</td>\n");
-	print("\t\t\t\t\t\t\t\t<td><a href=\"/categories/$category\" target=\"_blank\"><i class="fa fa-link"></i> $category</a></td>\n");
+	print("\t\t\t\t\t\t\t\t<td><a href=\"/categories/$category\" target=\"_blank\"><i class=\"fa fa-link\"></i> $category</a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$parent</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$title</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$rank</td>\n");
