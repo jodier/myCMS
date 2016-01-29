@@ -322,7 +322,7 @@ class TMyCMS
 
 			$this->pdo->exec(
 				'CREATE VIEW menusV AS' .
-				' SELECT menus.id, menus.alias, categories.alias AS category, CASE WHEN menus.parent IS NOT NULL THEN (SELECT T.alias FROM menus AS T WHERE T.id=menus.parent) ELSE \'\' END AS parent, menus.title, menus.icon, categories.rank AS rank0, menus.rank, CASE WHEN menus.link IS NOT NULL THEN menus.link ELSE pages.alias END AS page, menus.visible FROM categories, menus, pages' .
+				' SELECT menus.id, menus.alias, categories.alias AS category, CASE WHEN menus.parent IS NOT NULL THEN (SELECT T.alias FROM menus AS T WHERE T.id=menus.parent) ELSE \'\' END AS parent, menus.title, menus.icon, categories.rank AS rank0, menus.rank, CASE WHEN menus.link IS NOT NULL THEN menus.link ELSE CONCAT(\'/pages/\', pages.alias) END AS page, menus.visible FROM categories, menus, pages' .
 				' WHERE menus.category=categories.id AND menus.page=pages.id'
 			);
 
