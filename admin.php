@@ -452,7 +452,7 @@ else if($mode === 'menus')
 							<tr>
 								<td>
 									<div class="form-group form-group-sm">
-										<label for="menuPage">Menu link (internal page)</label>
+										<label for="menuPage">Menu page (internal link)</label>
 										<select name="menuPage" class="form-control" id="menuPage">
 <?php foreach($cms->getPages() as $key => $val) print("\t\t\t\t\t\t\t\t<option value=\"{$val['id']}\">{$val['alias']}</option>\n"); ?>
 										</select>
@@ -461,7 +461,7 @@ else if($mode === 'menus')
 								<td class="text-center">&nbsp;or&nbsp;</td>
 								<td>
 									<div class="form-group form-group-sm">
-										<label for="menuLink">Menu link (external page)</label>
+										<label for="menuLink">Menu page (external link)</label>
 										<input type="text" name="menuLink" class="form-control" id="menuLink" placeholder="Menu link" />
 									</div>
 								</td>
