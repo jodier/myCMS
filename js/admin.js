@@ -508,6 +508,7 @@ function editMenu(id)
 		$('#menuTitleInModal').val(data.title);
 		$('#menuRankInModal').val(data.rank);
 		$('#menuPageInModal').val(data.page);
+		$('#menuLinkInModal').val(data.link);
 
 		if(data.visible === '1') {
 			$('#menuVisibleInModal').bootstrapToggle('on');

@@ -322,7 +322,7 @@ class TMyCMS
 
 			$this->pdo->exec(
 				'CREATE VIEW menusV AS' .
-				' SELECT menus.id, menus.alias, categories.alias AS category, CASE WHEN menus.parent IS NOT NULL THEN (SELECT T.alias FROM menus AS T WHERE T.id=menus.parent) ELSE \'\' END AS parent, menus.title, menus.icon, categories.rank AS rank0, menus.rank, pages.alias AS page, menus.visible FROM categories, menus, pages' .
+				' SELECT menus.id, menus.alias, categories.alias AS category, CASE WHEN menus.parent IS NOT NULL THEN (SELECT T.alias FROM menus AS T WHERE T.id=menus.parent) ELSE \'\' END AS parent, menus.title, menus.icon, categories.rank AS rank0, menus.rank, CASE WHEN menus.link IS NOT NULL THEN menus.link ELSE pages.alias END AS page, menus.visible FROM categories, menus, pages' .
 				' WHERE menus.category=categories.id AND menus.page=pages.id'
 			);
 
@@ -444,7 +444,7 @@ class TMyCMS
 		$rank = $this->escapeSQL($this->getParam('categoryRank'));
 		$visible = $this->escapeSQL($this->getParam('categoryVisible', '0'));
 
-		if($id === '' || $alias === '' || $title === '' || $rank === '' || $visible === '')
+		if($id === '' || $alias === '' || $title === '' || $rank === '')
 		{
 			$this->error = 'missing parameter(s)';
 
@@ -529,7 +529,7 @@ class TMyCMS
 		$content = $this->escapeSQL($this->getParam('pageContent'));
 		$visible = $this->escapeSQL($this->getParam('pageVisible', '0'));
 
-		if($id === '' || $alias === '' || $title === '' || $visible === '')
+		if($id === '' || $alias === '' || $title === '')
 		{
 			$this->error = 'missing parameter(s)';
 
@@ -616,7 +616,7 @@ class TMyCMS
 		$content = $this->escapeSQL($this->getParam('articleContent'));
 		$visible = $this->escapeSQL($this->getParam('articleVisible', '0'));
 
-		if($id === '' || $alias === '' || $category === '' || $title === '' || $visible === '')
+		if($id === '' || $alias === '' || $category === '' || $title === '')
 		{
 			$this->error = 'missing parameter(s)';
 
@@ -667,10 +667,11 @@ class TMyCMS
 
 		$alias = $this->escapeSQL($this->getParam('menuAlias'));
 		$category = $this->escapeSQL($this->getParam('menuCategory'));
-		$parent = $this->escapeSQL($this->getParam('menuParent'));
+		$parent = $this->escapeSQL($this->getParam('menuParent'), '');
 		$title = $this->escapeSQL($this->getParam('menuTitle'));
 		$rank = $this->escapeSQL($this->getParam('menuRank'));
 		$page = $this->escapeSQL($this->getParam('menuPage'));
+		$link = $this->escapeSQL($this->getParam('menuLink'), '');
 
 		if($alias === '' || $category === '' || $title === '' || $rank === '' || $page === '')
 		{
@@ -681,11 +682,23 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		if($parent === '') {
-			$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page) VALUES ('$alias', '$category', NULL, '$title', '$rank', '$page')");
+		if($link === '')
+		{
+			if($parent === '') {
+				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', NULL, '$title', '$rank', '$page', NULL)");
+			}
+			else {
+				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', '$parent', '$title', '$rank', '$page', NULL)");
+			}
 		}
-		else {
-			$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page) VALUES ('$alias', '$category', '$parent', '$title', '$rank', '$page')");
+		else
+		{
+			if($parent === '') {
+				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', NULL, '$title', '$rank', '$page', '$link')");
+			}
+			else {
+				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', '$parent', '$title', '$rank', '$page', '$link')");
+			}
 		}
 
 		/*---------------------------------------------------------*/
@@ -707,13 +720,14 @@ class TMyCMS
 		$id = $this->escapeSQL($this->getParam('updateMenu'));
 		$alias = $this->escapeSQL($this->getParam('menuAlias'));
 		$category = $this->escapeSQL($this->getParam('menuCategory'));
-		$parent = $this->escapeSQL($this->getParam('menuParent'));
+		$parent = $this->escapeSQL($this->getParam('menuParent'), '');
 		$title = $this->escapeSQL($this->getParam('menuTitle'));
 		$rank = $this->escapeSQL($this->getParam('menuRank'));
 		$page = $this->escapeSQL($this->getParam('menuPage'));
+		$link = $this->escapeSQL($this->getParam('menuLink'), '');
 		$visible = $this->escapeSQL($this->getParam('menuVisible', '0'));
 
-		if($id === '' || $alias === '' || $category === '' || $title === '' || $rank === '' || $page === '' || $visible === '')
+		if($id === '' || $alias === '' || $category === '' || $title === '' || $rank === '' || ($page === '' && $link === ''))
 		{
 			$this->error = 'missing parameter(s)';
 
@@ -722,11 +736,23 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		if($parent === '') {
-			$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent=NULL, title='$title', rank='$rank', page='$page', visible='$visible' WHERE id='$id'");
+		if($link === '')
+		{
+			if($parent === '') {
+				$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent=NULL, title='$title', rank='$rank', page='$page', link=NULL, visible='$visible' WHERE id='$id'");
+			}
+			else {
+				$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent='$parent', title='$title', rank='$rank', page='$page', link=NULL, visible='$visible' WHERE id='$id'");
+			}
 		}
-		else {
-			$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent='$parent', title='$title', rank='$rank', page='$page', visible='$visible' WHERE id='$id'");
+		else
+		{
+			if($parent === '') {
+				$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent=NULL, title='$title', rank='$rank', page='$page', link='$link', visible='$visible' WHERE id='$id'");
+			}
+			else {
+				$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent='$parent', title='$title', rank='$rank', page='$page', link='$link', visible='$visible' WHERE id='$id'");
+			}
 		}
 
 		/*---------------------------------------------------------*/

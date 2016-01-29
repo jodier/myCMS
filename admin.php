@@ -448,12 +448,25 @@ else if($mode === 'menus')
 							<label for="menuRank">Menu rank</label>
 							<input type="number" name="menuRank" class="form-control" id="menuRank" placeholder="Menu rank" required="required" />
 						</div>
-						<div class="form-group form-group-sm">
-							<label for="menuCategory">Menu page</label>
-							<select name="menuPage" class="form-control" id="menuPage">
+						<table style="width: 100%;">
+							<tr>
+								<td>
+									<div class="form-group form-group-sm">
+										<label for="menuPage">Menu link (internal page)</label>
+										<select name="menuPage" class="form-control" id="menuPage">
 <?php foreach($cms->getPages() as $key => $val) print("\t\t\t\t\t\t\t\t<option value=\"{$val['id']}\">{$val['alias']}</option>\n"); ?>
-							</select>
-						</div>
+										</select>
+									</div>
+								</td>
+								<td class="text-center">&nbsp;or&nbsp;</td>
+								<td>
+									<div class="form-group form-group-sm">
+										<label for="menuLink">Menu link (external page)</label>
+										<input type="text" name="menuLink" class="form-control" id="menuLink" placeholder="Menu link" />
+									</div>
+								</td>
+							</tr>
+						</table>
 						<div class="text-right">
 							<input type="hidden" name="mode" value="menus" />
 							<button type="submit" name="addMenu" class="btn btn-default btn-sm">New menu</button>
@@ -497,7 +510,7 @@ foreach($cms->getMenus() as $key => $val)
 	print("\t\t\t\t\t\t\t\t<td>$parent</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$title</td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$rank</td>\n");
-	print("\t\t\t\t\t\t\t\t<td><a href=\"/pages/$page\" target=\"_blank\">$page</a></td>\n");
+	print("\t\t\t\t\t\t\t\t<td><a href=\"$page\" target=\"_blank\"><i class=\"fa fa-external-link\"></i></a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td>$visible</td>\n");
 	print("\t\t\t\t\t\t\t\t<td><a href=\"javascript:editMenu($id);\"><i class=\"fa fa-pencil text-primary\"></i></a></td>\n");
 	print("\t\t\t\t\t\t\t\t<td><a href=\"javascript:delMenu($id);\"><i class=\"fa fa-trash text-danger\"></i></a></td>\n");
@@ -551,11 +564,17 @@ foreach($cms->getMenus() as $key => $val)
 										</div>
 									</div>
 									<div class="form-group form-group-sm">
-										<label for="menuPageInModal" class="col-sm-2">Page</label>
+										<label for="menuPageInModal" class="col-sm-2">Link (int)</label>
 										<div class="col-sm-10">
 											<select name="menuPage" class="form-control" id="menuPageInModal">
 <?php foreach($cms->getPages() as $key => $val) print("\t\t\t\t\t\t\t\t\t\t\t\t<option value=\"{$val['id']}\">{$val['alias']}</option>\n"); ?>
 											</select>
+										</div>
+									</div>
+									<div class="form-group form-group-sm">
+										<label for="menuLinkInModal" class="col-sm-2">Link (ext)</label>
+										<div class="col-sm-10">
+											<input type="text" name="menuLink" class="form-control" id="menuLinkInModal" placeholder="Menu link" />
 										</div>
 									</div>
 								</div>
