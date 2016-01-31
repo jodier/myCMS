@@ -9,7 +9,7 @@ if($cms->isGuest())
 {
 	header('HTTP/1.0 403 Forbidden');
 
-	die("You are not allowed to access this file.");
+	die('<html><body>You are not allowed to access this file.</body></html>');
 }
 
 /*-------------------------------------------------------------------------*/
@@ -797,7 +797,7 @@ else
 							<p><i class="fa fa-chevron-right"></i> <a href="http://www.odier.eu/" target="_blank">By Jérôme ODIER</a></p>
 						</div>
 						<div class="col-md-6">
-							<p><i class="fa fa-chevron-right"></i> Force HTTPS: <br /><input type="checkbox" id="siteForceHTTPS" data-toggle="toggle" data-width="80" <?= isset($cms->config['force_https']) && $cms->config['force_https'] === '1' ? 'checked="checked"' : 'xxxxxxx="xxxxxxx"' ?> /></p>
+							<p><i class="fa fa-chevron-right"></i> Force HTTPS: <br /><input type="checkbox" data-toggle="toggle" data-width="80" id="siteForceHTTPS" <?= isset($cms->config['force_https']) && $cms->config['force_https'] === '1' ? 'checked="checked"' : 'xxxxxxx="xxxxxxx"' ?> /></p>
 
 							<p><i class="fa fa-chevron-right"></i> Description: <br /><input type="text" class="form-control" id="siteDescription" placeholder="Description" value="<?= isset($cms->config['description']) ? $cms->escapeHTML($cms->config['description']) : '' ?>" /></p>
 
