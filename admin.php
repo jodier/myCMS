@@ -95,18 +95,6 @@ if($cms->isGuest())
 					<br />
 
 <?php
-
-$errorInfo = $cms->errorInfo();
-
-if($errorInfo !== '')
-{
-	print("\t\t\t\t\t<div class=\"alert alert-danger alert-dismissible\" role=\"alert\">\n");
-	print("\t\t\t\t\t\t<button type=\"button\" class=\"close\" data-dismiss=\"alert\">×</button>\n");
-	print("\t\t\t\t\t\t<i class=\"fa fa-exclamation-circle\"></i> $errorInfo\n");
-	print("\t\t\t\t\t</div>\n");
-	print("\n");
-}
-
 $mode = $cms->getParam('mode');
 
 /*-------------------------------------------------------------------------*/
@@ -809,11 +797,11 @@ else
 							<p><i class="fa fa-chevron-right"></i> <a href="http://www.odier.eu/" target="_blank">By Jérôme ODIER</a></p>
 						</div>
 						<div class="col-md-6">
-							<p><i class="fa fa-chevron-right"></i> Force HTTPS: <input type="checkbox" data-toggle="toggle" data-width="80" /></p>
+							<p><i class="fa fa-chevron-right"></i> Force HTTPS: <br /><input type="checkbox" id="siteForceHTTPS" data-toggle="toggle" data-width="80" <?= isset($cms->config['force_https']) && $cms->config['force_https'] === '1' ? 'checked="checked"' : 'xxxxxxx="xxxxxxx"' ?> /></p>
 
-							<p><i class="fa fa-chevron-right"></i> Description: <br /><input type="text" class="form-control" placeholder="Description" /></p>
+							<p><i class="fa fa-chevron-right"></i> Description: <br /><input type="text" class="form-control" id="siteDescription" placeholder="Description" value="<?= isset($cms->config['description']) ? $cms->escapeHTML($cms->config['description']) : '' ?>" /></p>
 
-							<p><i class="fa fa-chevron-right"></i> Author: <br /><input type="text" class="form-control" placeholder="Author" /></p>
+							<p><i class="fa fa-chevron-right"></i> Author: <br /><input type="text" class="form-control" id="siteAuthor" placeholder="Author" value="<?= isset($cms->config['author']) ? $cms->escapeHTML($cms->config['author']) : '' ?>" /></p>
 						</div>
 					</div>
 

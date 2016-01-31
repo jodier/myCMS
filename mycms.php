@@ -1,10 +1,14 @@
 <?php
 /*-------------------------------------------------------------------------*/
+/* DEBUG MODE                                                              */
+/*-------------------------------------------------------------------------*/
 
 ini_set('display_startup_errors', 1);
 ini_set('display_errors', 1);
 error_reporting(-1);
 
+/*-------------------------------------------------------------------------*/
+/* PARSEDOWN                                                               */
 /*-------------------------------------------------------------------------*/
 
 require_once('config.php');
@@ -58,11 +62,15 @@ class Extension extends Parsedown
 }
 
 /*-------------------------------------------------------------------------*/
+/* MYCMS                                                                   */
+/*-------------------------------------------------------------------------*/
 
 class TMyCMS
 {
 	/*-----------------------------------------------------------------*/
 	/*-----------------------------------------------------------------*/
+
+	public $config = [];
 
 	public $diskFree = 0;
 	public $diskTotal = 0;
@@ -71,9 +79,14 @@ class TMyCMS
 	public $memTotal = 0;
 
 	/*-----------------------------------------------------------------*/
+	/*-----------------------------------------------------------------*/
 
 	public function __construct($host, $port, $db, $login, $password, $adminIPs)
 	{
+		/*----------------------------------------------------------*/
+
+		$this->adminIPs = $adminIPs;
+
 		/*----------------------------------------------------------*/
 
 		$dir = dirname(__FILE__);
@@ -109,17 +122,28 @@ class TMyCMS
 
 		try
 		{
+			/*-------------------------------------------------*/
+
 			$this->pdo = new PDO("mysql:host=$host;port=$port;dbname=$db", $login, $password);
 
 			$this->pdo->exec('SET NAMES "utf8"');
 
-			$this->adminIPs = $adminIPs;
+			/*-------------------------------------------------*/
 
-			$this->error = '';
+			$stmt = $this->pdo->query('SELECT alias, content FROM config');
+
+			while($row = $stmt->fetch(PDO::FETCH_NUM))
+	 		{
+				$this->config[$row[0]] = $row[1];
+			}
+
+			$stmt->closeCursor();
+
+			/*-------------------------------------------------*/
 		}
  		catch(Exception $e)
 		{
-			die('<html><body>database error</body></html>');
+			$this->htmlError('database error');
 		}
 
 		/*----------------------------------------------------------*/
@@ -246,10 +270,21 @@ class TMyCMS
 	}
 
 	/*-----------------------------------------------------------------*/
+	/*-----------------------------------------------------------------*/
 
-	public function errorInfo()
+	private function error($message)
 	{
-		return $this->escapeHTML($this->pdo->errorInfo()[2] . $this->error);
+		die($message);
+	}
+
+	private function htmlError($message)
+	{
+		die('<html><body>' . $message . '</body></html>');
+	}
+
+	private function htmlErrorRedirect($message)
+	{
+		die('<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body>' . $message . '</body></html>');
 	}
 
 	/*-----------------------------------------------------------------*/
@@ -259,7 +294,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			die('<html><body>not authorized</body></html>');
+			$this->htmlError('not authorized');
 		}
 
 		try
@@ -358,13 +393,13 @@ class TMyCMS
 			$this->pdo->exec('ALTER TABLE `menus` ADD CONSTRAINT `FK3` FOREIGN KEY (`parent`) REFERENCES `menus` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;');
 			$this->pdo->exec('ALTER TABLE `menus` ADD CONSTRAINT `FK4` FOREIGN KEY (`page`) REFERENCES `pages` (`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;');
 
-			die('<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body>done with success</body></html>');
+			$this->htmlErrorRedirect('done with success');
 		}
  		catch(Exception $e)
 		{
-			$stdout = $this->escapeHTML($e->getMessage());
+			$stdout = $e->getMessage();
 
-			die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre>$stdout</pre></body></html>");
+			$this->htmlErrorRedirect("<pre>$stdout</pre>done with error");
 		}
 	}
 
@@ -375,7 +410,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			die('<html><body>not authorized</body></html>');
+			$this->htmlError('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -384,7 +419,7 @@ class TMyCMS
 
 		if($fp === FALSE)
 		{
-			die('<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body>could not download myCMS</body></html>');
+			$this->htmlErrorRedirect('could not download myCMS');
 		}
 
 		/*---------------------------------------------------------*/
@@ -393,16 +428,20 @@ class TMyCMS
 
 		if($nb === FALSE)
 		{
-			die('<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body>could not write myCMS</body></html>');
+			$this->htmlErrorRedirect('could not write myCMS');
 		}
 
 		/*---------------------------------------------------------*/
 
-		$stdout = $this->escapeHTML(shell_exec('unzip -o -d ./tmp ./tmp/myCMS-master.zip && cp -Rv ./tmp/myCMS-master/* . && rm -fr ./tmp/*'));
+		$stdout = shell_exec('unzip -o -d ./tmp ./tmp/myCMS-master.zip && cp -Rv ./tmp/myCMS-master/* . && rm -fr ./tmp/*');
 
 		/*---------------------------------------------------------*/
 
-		die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre>$stdout</pre>done with success</body></html>");
+		$stdout = $this->escapeHTML($stdout);
+
+		$this->htmlErrorRedirect("<pre>$stdout</pre>done with success");
+
+		/*---------------------------------------------------------*/
 	}
 
 	/*-----------------------------------------------------------------*/
@@ -412,9 +451,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -425,9 +462,7 @@ class TMyCMS
 
 		if($alias === '' || $title === '' || $rank === '')
 		{
-			$this->error = 'missing parameter(s)';
-
-			return;
+			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
@@ -443,9 +478,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -458,9 +491,7 @@ class TMyCMS
 
 		if($id === '' || $alias === '' || $title === '' || $rank === '')
 		{
-			$this->error = 'missing parameter(s)';
-
-			return;
+			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
@@ -476,9 +507,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -498,9 +527,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -510,9 +537,7 @@ class TMyCMS
 
 		if($alias === '' || $title === '')
 		{
-			$this->error = 'missing parameter(s)';
-
-			return;
+			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
@@ -528,9 +553,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -543,9 +566,7 @@ class TMyCMS
 
 		if($id === '' || $alias === '' || $title === '')
 		{
-			$this->error = 'missing parameter(s)';
-
-			return;
+			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
@@ -561,9 +582,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -583,9 +602,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -596,9 +613,7 @@ class TMyCMS
 
 		if($alias === '' || $category === '' || $title === '')
 		{
-			$this->error = 'missing parameter(s)';
-
-			return;
+			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
@@ -614,9 +629,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -630,9 +643,7 @@ class TMyCMS
 
 		if($id === '' || $alias === '' || $category === '' || $title === '')
 		{
-			$this->error = 'missing parameter(s)';
-
-			return;
+			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
@@ -648,9 +659,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -670,9 +679,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -687,9 +694,7 @@ class TMyCMS
 
 		if($alias === '' || $category === '' || $title === '' || $rank === '' || $page === '')
 		{
-			$this->error = 'missing parameter(s)';
-
-			return;
+			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
@@ -722,9 +727,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -741,9 +744,7 @@ class TMyCMS
 
 		if($id === '' || $alias === '' || $category === '' || $title === '' || $rank === '' || ($page === '' && $link === ''))
 		{
-			$this->error = 'missing parameter(s)';
-
-			return;
+			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
@@ -776,9 +777,7 @@ class TMyCMS
 	{
 		if($this->isGuest())
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -816,13 +815,13 @@ class TMyCMS
 				}
 				catch(Exception $e)
 				{
-					$this->error = "could not create thumbnail image: " . $e->getMessage();
+					$this->error('could not create thumbnail image: ' . $e->getMessage());
 				}
 			}
 		}
 		else
 		{
-			$this->error = "could not create thumbnail image: extension `imagick` not installed";
+			$this->error('could not create thumbnail image: extension `imagick` not installed');
 		}
 	}
 
@@ -832,9 +831,7 @@ class TMyCMS
 	{
 		if($this->isGuest() || isset($_FILES['files']) === false)
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -854,7 +851,7 @@ class TMyCMS
 			}
 			else
 			{
-				$this->error = "could not copy `$from` to `../media/$to`";
+				$this->error("could not copy `$from` to `../media/$to`");
 			}
 		}
 
@@ -867,9 +864,7 @@ class TMyCMS
 	{
 		if($this->isGuest() || $this->hasParam('oldFile') === false || $this->hasParam('newFile') === false)
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -879,7 +874,7 @@ class TMyCMS
 
 		if(rename("../media/$oldFile", "../media/$newFile") === false)
 		{
-			$this->error = "could not rename `$oldFile` to `$newFile`";
+			$this->error("could not rename `$oldFile` to `$newFile`");
 		}
 
 		/*---------------------------------------------------------*/
@@ -891,9 +886,7 @@ class TMyCMS
 	{
 		if($this->isGuest() || $this->hasParam('file') === false)
 		{
-			$this->error = 'not authorized';
-
-			return;
+			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
@@ -902,7 +895,7 @@ class TMyCMS
 
 		if(unlink("../media/$file") === false)
 		{
-			$this->error = "could not delete `$file`";
+			$this->error("could not delete `$file`");
 		}
 
 		/*---------------------------------------------------------*/
