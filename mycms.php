@@ -70,6 +70,11 @@ class TMyCMS
 	/*-----------------------------------------------------------------*/
 	/*-----------------------------------------------------------------*/
 
+	private $tarballURL = 'https://github.com/jodier/myCMS/archive/master.zip';
+
+	/*-----------------------------------------------------------------*/
+	/*-----------------------------------------------------------------*/
+
 	public $diskFree = 0;
 	public $diskTotal = 0;
 
@@ -410,9 +415,7 @@ class TMyCMS
 		}
  		catch(Exception $e)
 		{
-			$stdout = $this->escapeHTML($e->getMessage());
-
-			$this->htmlErrorRedirect("<pre>$stdout</pre>done with error");
+			$this->htmlErrorRedirect('<pre>' . $this->escapeHTML($e->getMessage()) . '</pre>done with error');
 		}
 
 		/*---------------------------------------------------------*/
@@ -430,7 +433,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$fp = fopen('https://github.com/jodier/myCMS/archive/master.zip', 'r');
+		$fp = fopen($this->tarballURL, 'r');
 
 		if($fp === false)
 		{
@@ -452,9 +455,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$stdout = $this->escapeHTML($stdout);
-
-		$this->htmlErrorRedirect("<pre>$stdout</pre>done with success");
+		$this->htmlErrorRedirect('<pre>' . $this->escapeHTML($stdout) . '</pre>done with success');
 
 		/*---------------------------------------------------------*/
 	}
@@ -836,7 +837,7 @@ class TMyCMS
 		}
 		else
 		{
-			$this->error('could not create thumbnail image: extension `imagick` not found');
+			$this->error('could not create thumbnail image: extension `imagick` not installed');
 		}
 	}
 
