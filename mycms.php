@@ -158,6 +158,18 @@ class TMyCMS
 
 	/*-----------------------------------------------------------------*/
 
+	public function testHTTPS()
+	{
+		if((isset($this->config['force_https']) && $this->config['force_https'] === '1') && (!isset($_SERVER['HTTPS']) || !$_SERVER['HTTPS']))
+		{
+			header('Location: https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI']);
+
+			exit;
+		}
+	}
+
+	/*-----------------------------------------------------------------*/
+
 	public function getDiskUsage()
 	{
 		return $this->diskFree !== 0 ? 100.0 * (1.0 - $this->diskFree / $this->diskTotal) : 100.0;
