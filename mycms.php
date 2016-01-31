@@ -267,6 +267,14 @@ class TMyCMS
 			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
 			$this->pdo->exec(
+				'CREATE TABLE `config` (' .
+				'  `id` int(11) NOT NULL,' .
+				'  `alias` varchar(128) NOT NULL,' .
+				'  `content` varchar(128) NOT NULL' .
+				') ENGINE=InnoDB DEFAULT CHARSET=utf8'
+			);
+
+			$this->pdo->exec(
 				'CREATE TABLE `categories` (' .
 				'  `id` int(11) NOT NULL,' .
 				'  `alias` varchar(128) NOT NULL,' .
@@ -310,7 +318,8 @@ class TMyCMS
 				'  `icon` varchar(128) NOT NULL,' .
 				'  `rank` int(11) NOT NULL DEFAULT \'0\',' .
 				'  `page` int(11) NOT NULL,' .
-				'  `visible` int(1) NOT NULL DEFAULT \'1\'' .
+				'  `link` varchar(512) NULL,' .
+				'  `visible` int(1) NOT NULL DEFAULT \'0\'' .
 				') ENGINE=InnoDB DEFAULT CHARSET=utf8'
 			);
 
@@ -326,16 +335,19 @@ class TMyCMS
 				' WHERE menus.category=categories.id AND menus.page=pages.id'
 			);
 
-			$this->pdo->exec('ALTER TABLE `categories` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX1` (`id`);');
-			$this->pdo->exec('ALTER TABLE `pages` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX2` (`id`);');
-			$this->pdo->exec('ALTER TABLE `articles` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX3` (`id`);');
-			$this->pdo->exec('ALTER TABLE `menus` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX4` (`id`);');
+			$this->pdo->exec('ALTER TABLE `config` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX1` (`id`);');
+			$this->pdo->exec('ALTER TABLE `categories` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX2` (`id`);');
+			$this->pdo->exec('ALTER TABLE `pages` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX3` (`id`);');
+			$this->pdo->exec('ALTER TABLE `articles` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX4` (`id`);');
+			$this->pdo->exec('ALTER TABLE `menus` ADD UNIQUE KEY `id` (`id`), ADD KEY `IDX5` (`id`);');
 
-			$this->pdo->exec('ALTER TABLE `categories` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX6` (`alias`);');
-			$this->pdo->exec('ALTER TABLE `pages` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX7` (`alias`);');
-			$this->pdo->exec('ALTER TABLE `articles` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX8` (`alias`);');
-			$this->pdo->exec('ALTER TABLE `menus` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX9` (`id`);');
+			$this->pdo->exec('ALTER TABLE `config` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX6` (`alias`);');
+			$this->pdo->exec('ALTER TABLE `categories` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX7` (`alias`);');
+			$this->pdo->exec('ALTER TABLE `pages` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX8` (`alias`);');
+			$this->pdo->exec('ALTER TABLE `articles` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX9` (`alias`);');
+			$this->pdo->exec('ALTER TABLE `menus` ADD UNIQUE KEY `alias` (`alias`), ADD KEY `IDX10` (`alias`);');
 
+			$this->pdo->exec('ALTER TABLE `config` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=0;');
 			$this->pdo->exec('ALTER TABLE `categories` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=0;');
 			$this->pdo->exec('ALTER TABLE `pages` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=0;');
 			$this->pdo->exec('ALTER TABLE `articles` MODIFY `id` int(11) NOT NULL AUTO_INCREMENT,AUTO_INCREMENT=0;');
@@ -350,7 +362,9 @@ class TMyCMS
 		}
  		catch(Exception $e)
 		{
-			die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre>$e</pre></body></html>");
+			$stdout = $this->escapeHTML($e->getMessage());
+
+			die("<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body><pre>$stdout</pre></body></html>");
 		}
 	}
 
@@ -384,9 +398,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$stdout = $this->escapeHTML(
-			shell_exec('unzip -o -d ./tmp ./tmp/myCMS-master.zip && cp -Rv ./tmp/myCMS-master/* . && rm -fr ./tmp/*')
-		);
+		$stdout = $this->escapeHTML(shell_exec('unzip -o -d ./tmp ./tmp/myCMS-master.zip && cp -Rv ./tmp/myCMS-master/* . && rm -fr ./tmp/*'));
 
 		/*---------------------------------------------------------*/
 
