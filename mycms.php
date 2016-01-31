@@ -48,7 +48,7 @@ class Extension extends Parsedown
 	{
 		$Block = parent::blockTable($Line, $Block);
 
-		if($Block != null)
+		if($Block)
 		{
 			$Block['element']['attributes'] = array(
 				'class' => 'table table-striped'
@@ -135,7 +135,7 @@ class TMyCMS
 
 		$stmt = $this->pdo->query('SELECT alias, content FROM config');
 
-		if($stmt !== FALSE)
+		if($stmt)
 		{
 			while($row = $stmt->fetch(PDO::FETCH_NUM))
 	 		{
@@ -308,6 +308,8 @@ class TMyCMS
 			$this->htmlError('not authorized');
 		}
 
+		/*---------------------------------------------------------*/
+
 		try
 		{
 			$this->pdo->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
@@ -408,10 +410,12 @@ class TMyCMS
 		}
  		catch(Exception $e)
 		{
-			$stdout = $e->getMessage();
+			$stdout = $this->escapeHTML($e->getMessage());
 
 			$this->htmlErrorRedirect("<pre>$stdout</pre>done with error");
 		}
+
+		/*---------------------------------------------------------*/
 	}
 
 	/*-----------------------------------------------------------------*/
@@ -428,7 +432,7 @@ class TMyCMS
 
 		$fp = fopen('https://github.com/jodier/myCMS/archive/master.zip', 'r');
 
-		if($fp === FALSE)
+		if($fp === false)
 		{
 			$this->htmlErrorRedirect('could not download myCMS');
 		}
@@ -437,7 +441,7 @@ class TMyCMS
 
 		$nb = file_put_contents('./tmp/myCMS-master.zip', $fp);
 
-		if($nb === FALSE)
+		if($nb === false)
 		{
 			$this->htmlErrorRedirect('could not write myCMS');
 		}
@@ -840,21 +844,26 @@ class TMyCMS
 
 	public function addFile()
 	{
-		if($this->isGuest() || isset($_FILES['files']) === false)
+		if($this->isGuest())
 		{
 			$this->error('not authorized');
 		}
 
 		/*---------------------------------------------------------*/
 
-		$files = $_FILES['files'];
+		if(!isset($_FILES['files']) || !$_FILES['files'])
+		{
+			$this->error('missing parameter(s)');
+		}
+
+		/*---------------------------------------------------------*/
 
 		$nr = count($files['name']);
 
 		for($i = 0; $i < $nr; $i++)
 		{
-			$from = $files['tmp_name'][$i];
-			$to = $files['name'][$i];
+			$from = $_FILES['files']['tmp_name'][$i];
+			$to = $_FILES['files']['name'][$i];
 
 			if(copy("$from", "../media/$to"))
 			{
@@ -873,7 +882,7 @@ class TMyCMS
 
 	public function renFile()
 	{
-		if($this->isGuest() || $this->hasParam('oldFile') === false || $this->hasParam('newFile') === false)
+		if($this->isGuest())
 		{
 			$this->error('not authorized');
 		}
@@ -882,6 +891,13 @@ class TMyCMS
 
 		$oldFile = $this->getParam('oldFile');
 		$newFile = $this->getParam('newFile');
+
+		if($oldFile === '' && $newFile === '')
+		{
+			$this->error('missing parameter(s)');
+		}
+
+		/*---------------------------------------------------------*/
 
 		if(rename("../media/$oldFile", "../media/$newFile") === false)
 		{
@@ -895,7 +911,7 @@ class TMyCMS
 
 	public function delFile()
 	{
-		if($this->isGuest() || $this->hasParam('file') === false)
+		if($this->isGuest())
 		{
 			$this->error('not authorized');
 		}
@@ -903,6 +919,13 @@ class TMyCMS
 		/*---------------------------------------------------------*/
 
 		$file = $this->getParam('file');
+
+		if($file === '')
+		{
+			$this->error('missing parameter(s)');
+		}
+
+		/*---------------------------------------------------------*/
 
 		if(unlink("../media/$file") === false)
 		{
