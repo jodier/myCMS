@@ -851,19 +851,26 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		if(!isset($_FILES['files']) || !$_FILES['files'])
+		if(!isset($_FILES['files']) || !$_FILES['files'] || !isset($_FILES['files']['tmp_name']) || !isset($_FILES['files']['name']))
 		{
 			$this->error('missing parameter(s)');
 		}
 
 		/*---------------------------------------------------------*/
 
-		$nr = count($files['name']);
+		$fromArray = $_FILES['files']['tmp_name'];
+		$toArray = $_FILES['files']['name'];
+
+		$nr = max(
+			count($fromArray)
+			,
+			count($toArray)
+		);
 
 		for($i = 0; $i < $nr; $i++)
 		{
-			$from = $_FILES['files']['tmp_name'][$i];
-			$to = $_FILES['files']['name'][$i];
+			$from = $fromArray[$i];
+			$to = $toArray[$i];
 
 			if(copy("$from", "../media/$to"))
 			{
