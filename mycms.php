@@ -284,7 +284,7 @@ class TMyCMS
 
 	private function htmlErrorRedirect($message)
 	{
-		die('<html><head><meta http-equiv=\"Refresh\" content=\"5; url=admin.php\" /></head><body>' . $message . '</body></html>');
+		die('<html><head><meta http-equiv="Refresh" content="5; url=admin.php" /></head><body>' . $message . '</body></html>');
 	}
 
 	/*-----------------------------------------------------------------*/
