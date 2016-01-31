@@ -70,8 +70,6 @@ class TMyCMS
 	/*-----------------------------------------------------------------*/
 	/*-----------------------------------------------------------------*/
 
-	public $config = [];
-
 	public $diskFree = 0;
 	public $diskTotal = 0;
 
@@ -122,28 +120,29 @@ class TMyCMS
 
 		try
 		{
-			/*-------------------------------------------------*/
-
 			$this->pdo = new PDO("mysql:host=$host;port=$port;dbname=$db", $login, $password);
 
 			$this->pdo->exec('SET NAMES "utf8"');
+		}
+ 		catch(Exception $e)
+		{
+			$this->htmlError('database error');
+		}
 
-			/*-------------------------------------------------*/
+		/*----------------------------------------------------------*/
 
-			$stmt = $this->pdo->query('SELECT alias, content FROM config');
+		$this->config = [];
 
+		$stmt = $this->pdo->query('SELECT alias, content FROM config');
+
+		if($stmt !== FALSE)
+		{
 			while($row = $stmt->fetch(PDO::FETCH_NUM))
 	 		{
 				$this->config[$row[0]] = $row[1];
 			}
 
 			$stmt->closeCursor();
-
-			/*-------------------------------------------------*/
-		}
- 		catch(Exception $e)
-		{
-			$this->htmlError('database error');
 		}
 
 		/*----------------------------------------------------------*/
@@ -821,7 +820,7 @@ class TMyCMS
 		}
 		else
 		{
-			$this->error('could not create thumbnail image: extension `imagick` not installed');
+			$this->error('could not create thumbnail image: extension `imagick` not found');
 		}
 	}
 
@@ -1368,6 +1367,8 @@ class TMyCMS
 	/*-----------------------------------------------------------------*/
 }
 
+/*-------------------------------------------------------------------------*/
+/* INSTANCE                                                                */
 /*-------------------------------------------------------------------------*/
 
 $cms = new TMyCMS($TMyCMS_host, $TMyCMS_port, $TMyCMS_db, $TMyCMS_login, $TMyCMS_password, $TMyCMS_adminIPs);
