@@ -1151,7 +1151,7 @@ class TMyCMS
 	{
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->prepare('SELECT * FROM menusV' . $this->_buildWhereClause($opts) . ' ORDER BY rank0, parent, rank, alias ASC');
+		$stmt = $this->pdo->prepare('SELECT * FROM menusV' . $this->_buildWhereClause($opts) . ' ORDER BY parent, rank, alias ASC');
 
 		$this->_setupWhereClause($stmt, $opts);
 
