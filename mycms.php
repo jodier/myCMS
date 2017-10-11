@@ -483,7 +483,13 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("INSERT INTO categories (alias, title, rank, visible) VALUES ('$alias', '$title', '$rank', 0)");
+		$stmt = $this->pdo->prepare('INSERT INTO categories (alias, title, rank, visible) VALUES (?, ?, ?, 0)');
+
+		$stmt->bindParam(1, $alias);
+		$stmt->bindParam(2, $title);
+		$stmt->bindParam(3, $rank);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -512,7 +518,15 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("UPDATE categories SET alias='$alias', title='$title', rank='$rank', visible='$visible' WHERE id='$id'");
+		$stmt = $this->pdo->prepare('UPDATE categories SET alias=?, title=?, rank=?, visible=? WHERE id=?');
+
+		$stmt->bindParam(1, $alias);
+		$stmt->bindParam(2, $title);
+		$stmt->bindParam(3, $rank);
+		$stmt->bindParam(4, $visible);
+		$stmt->bindParam(5, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -532,7 +546,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("DELETE FROM categories WHERE id = '$id'");
+		$stmt = $this->pdo->prepare('DELETE FROM categories WHERE id=?');
+
+		$stmt->bindParam(1, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -558,7 +576,12 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("INSERT INTO pages (alias, title, visible) VALUES ('$alias', '$title', 0)");
+		$stmt = $this->pdo->prepare('INSERT INTO pages (alias, title, visible) VALUES (?, ?, 0)');
+
+		$stmt->bindParam(1, $alias);
+		$stmt->bindParam(2, $title);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -587,7 +610,15 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("UPDATE pages SET alias='$alias', title='$title', content='$content', visible='$visible' WHERE id='$id'");
+		$stmt = $this->pdo->prepare('UPDATE pages SET alias=?, title=?, content=?, visible=? WHERE id=?');
+
+		$stmt->bindParam(1, $alias);
+		$stmt->bindParam(2, $title);
+		$stmt->bindParam(3, $content);
+		$stmt->bindParam(4, $visible);
+		$stmt->bindParam(5, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -607,7 +638,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("DELETE FROM pages WHERE id = '$id'");
+		$stmt = $this->pdo->prepare('DELETE FROM pages WHERE id=?');
+
+		$stmt->bindParam(1, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -634,7 +669,13 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("INSERT INTO articles (alias, category, title, visible) VALUES ('$alias', '$category', '$title', 0)");
+		$stmt = $this->pdo->prepare('INSERT INTO articles (alias, category, title, visible) VALUES (?, ?, ?, 0)');
+
+		$stmt->bindParam(1, $alias);
+		$stmt->bindParam(2, $category);
+		$stmt->bindParam(3, $title);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -664,7 +705,16 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("UPDATE articles SET alias='$alias', category='$category', title='$title', content='$content', visible='$visible' WHERE id='$id'");
+		$stmt = $this->pdo->prepare('UPDATE articles SET alias=?, category=?, title=?, content=?, visible=? WHERE id=?');
+
+		$stmt->bindParam(1, $alias);
+		$stmt->bindParam(2, $category);
+		$stmt->bindParam(3, $title);
+		$stmt->bindParam(4, $content);
+		$stmt->bindParam(5, $visible);
+		$stmt->bindParam(6, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -684,7 +734,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("DELETE FROM articles WHERE id = '$id'");
+		$stmt = $this->pdo->prepare('DELETE FROM articles WHERE id=?');
+
+		$stmt->bindParam(1, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -717,22 +771,56 @@ class TMyCMS
 
 		if($link === '')
 		{
-			if($parent === '') {
-				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', NULL, '$title', '$rank', '$page', NULL)");
+			if($parent === '')
+			{
+				$stmt = $this->pdo->prepare('INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES (?, ?, NULL, ?, ?, ?, NULL)');
+
+				$stmt->bindParam(1, $alias);
+				$stmt->bindParam(2, $category);
+				$stmt->bindParam(3, $title);
+				$stmt->bindParam(4, $rank);
+				$stmt->bindParam(5, $page);
 			}
-			else {
-				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', '$parent', '$title', '$rank', '$page', NULL)");
+			else
+			{
+				$stmt = $this->pdo->prepare('INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES (?, ?, ?, ?, ?, ?, NULL)');
+
+				$stmt->bindParam(1, $alias);
+				$stmt->bindParam(2, $category);
+				$stmt->bindParam(3, $parent);
+				$stmt->bindParam(4, $title);
+				$stmt->bindParam(5, $rank);
+				$stmt->bindParam(6, $page);
 			}
 		}
 		else
 		{
-			if($parent === '') {
-				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', NULL, '$title', '$rank', '1', '$link')");
+			if($parent === '')
+			{
+				$stmt = $this->pdo->prepare('INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES (?, ?, NULL, ?, ?, ?, ?)');
+
+				$stmt->bindParam(1, $alias);
+				$stmt->bindParam(2, $category);
+				$stmt->bindParam(3, $title);
+				$stmt->bindParam(4, $rank);
+				$stmt->bindParam(5, $page);
+				$stmt->bindParam(6, $link);
 			}
-			else {
-				$this->pdo->exec("INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES ('$alias', '$category', '$parent', '$title', '$rank', '1', '$link')");
+			else
+			{
+				$stmt = $this->pdo->prepare('INSERT INTO menus (alias, category, parent, title, rank, page, link) VALUES (?, ?, ?, ?, ?, ?, ?)');
+
+				$stmt->bindParam(1, $alias);
+				$stmt->bindParam(2, $category);
+				$stmt->bindParam(3, $parent);
+				$stmt->bindParam(4, $title);
+				$stmt->bindParam(5, $rank);
+				$stmt->bindParam(6, $page);
+				$stmt->bindParam(7, $link);
 			}
 		}
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -767,22 +855,64 @@ class TMyCMS
 
 		if($link === '')
 		{
-			if($parent === '') {
-				$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent=NULL, title='$title', rank='$rank', page='$page', link=NULL, visible='$visible' WHERE id='$id'");
+			if($parent === '')
+			{
+				$stmt = $this->pdo->prepare('UPDATE menus SET alias=?, category=?, parent=NULL, title=?, rank=?, page=?, link=NULL, visible=? WHERE id=?');
+
+				$stmt->bindParam(1, $alias);
+				$stmt->bindParam(2, $category);
+				$stmt->bindParam(3, $title);
+				$stmt->bindParam(4, $rank);
+				$stmt->bindParam(5, $page);
+				$stmt->bindParam(6, $visible);
+				$stmt->bindParam(7, $id);
 			}
-			else {
-				$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent='$parent', title='$title', rank='$rank', page='$page', link=NULL, visible='$visible' WHERE id='$id'");
+			else
+			{
+				$stmt = $this->pdo->prepare('UPDATE menus SET alias=?, category=?, parent=?, title=?, rank=?, page=?, link=NULL, visible=? WHERE id=?');
+
+				$stmt->bindParam(1, $alias);
+				$stmt->bindParam(2, $category);
+				$stmt->bindParam(3, $parent);
+				$stmt->bindParam(4, $title);
+				$stmt->bindParam(5, $rank);
+				$stmt->bindParam(6, $page);
+				$stmt->bindParam(7, $visible);
+				$stmt->bindParam(8, $id);
 			}
 		}
 		else
 		{
-			if($parent === '') {
-				$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent=NULL, title='$title', rank='$rank', page='$page', link='$link', visible='$visible' WHERE id='$id'");
+			if($parent === '')
+			{
+				$stmt = $this->pdo->prepare('UPDATE menus SET alias=?, category=?, parent=NULL, title=?, rank=?, page=?, link=?, visible=? WHERE id=?');
+
+				$stmt->bindParam(1, $alias);
+				$stmt->bindParam(2, $category);
+				$stmt->bindParam(3, $title);
+				$stmt->bindParam(4, $rank);
+				$stmt->bindParam(5, $page);
+				$stmt->bindParam(6, $link);
+				$stmt->bindParam(7, $visible);
+				$stmt->bindParam(8, $id);
 			}
-			else {
-				$this->pdo->exec("UPDATE menus SET alias='$alias', category='$category', parent='$parent', title='$title', rank='$rank', page='$page', link='$link', visible='$visible' WHERE id='$id'");
+			else
+			{
+				$stmt = $this->pdo->prepare('UPDATE menus SET alias=?, category=?, parent=?, title=?, rank=?, page=?, link=?, visible=? WHERE id=?');
+
+				$stmt->bindParam(1, $alias);
+				$stmt->bindParam(2, $category);
+				$stmt->bindParam(3, $parent);
+				$stmt->bindParam(4, $title);
+				$stmt->bindParam(5, $rank);
+				$stmt->bindParam(6, $page);
+				$stmt->bindParam(7, $link);
+				$stmt->bindParam(8, $visible);
+				$stmt->bindParam(9, $id);
 			}
 		}
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -802,7 +932,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$this->pdo->exec("DELETE FROM menus WHERE id = '$id'");
+		$stmt = $this->pdo->prepare('DELETE FROM menus WHERE id=?');
+
+		$stmt->bindParam(1, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 	}
@@ -948,17 +1082,26 @@ class TMyCMS
 
 	private function _buildWhereClause($opts)
 	{
-		$i = 0;
 		$L = [];
 
 		foreach($opts as $key => $val)
 		{
-			$i++;
-
-			array_push($L, "$key='" . $this->escapeSQL($val) . "'");
+			array_push($L, $key . '=?');
 		}
 
-		return $i > 0 ? ' WHERE ' . join($L, ' AND ') : '';
+		return count($L) > 0 ? ' WHERE ' . join($L, ' AND ') : '';
+	}
+
+	/*-----------------------------------------------------------------*/
+
+	private function _setupWhereClause($stmt, $opts)
+	{
+		$i = 1;
+
+		foreach($opts as $key => $val)
+		{
+			$stmt->bindParam($i++, $val);
+		}
 	}
 
 	/*-----------------------------------------------------------------*/
@@ -967,7 +1110,11 @@ class TMyCMS
 	{
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->query('SELECT * FROM categories' . $this->_buildWhereClause($opts) . ' ORDER BY rank, alias ASC');
+		$stmt = $this->pdo->prepare('SELECT * FROM categories' . $this->_buildWhereClause($opts) . ' ORDER BY rank, alias ASC');
+
+		$this->_setupWhereClause($stmt, $opts);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 
@@ -988,7 +1135,11 @@ class TMyCMS
 	{
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->query('SELECT * FROM pages' . $this->_buildWhereClause($opts) . ' ORDER BY alias ASC');
+		$stmt = $this->pdo->prepare('SELECT * FROM pages' . $this->_buildWhereClause($opts) . ' ORDER BY alias ASC');
+
+		$this->_setupWhereClause($stmt, $opts);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 
@@ -1009,7 +1160,11 @@ class TMyCMS
 	{
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->query('SELECT * FROM articlesV' . $this->_buildWhereClause($opts) . ' ORDER BY category, alias ASC');
+		$stmt = $this->pdo->prepare('SELECT * FROM articlesV' . $this->_buildWhereClause($opts) . ' ORDER BY category, alias ASC');
+
+		$this->_setupWhereClause($stmt, $opts);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 
@@ -1030,7 +1185,11 @@ class TMyCMS
 	{
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->query('SELECT * FROM menusV' . $this->_buildWhereClause($opts) . ' ORDER BY rank0, rank, alias ASC');
+		$stmt = $this->pdo->prepare('SELECT * FROM menusV' . $this->_buildWhereClause($opts) . ' ORDER BY rank0, rank, alias ASC');
+
+		$this->_setupWhereClause($stmt, $opts);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 
@@ -1056,7 +1215,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->query("SELECT * FROM categories WHERE id='$id'");
+		$stmt = $this->pdo->prepare('SELECT * FROM categories WHERE id=?');
+
+		$stmt->bindParam(1, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 
@@ -1070,6 +1233,8 @@ class TMyCMS
 		/*---------------------------------------------------------*/
 
 		$stmt->closeCursor();
+
+		/*---------------------------------------------------------*/
 
 		die('{}');
 
@@ -1086,7 +1251,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->query("SELECT * FROM pages WHERE id='$id'");
+		$stmt = $this->pdo->prepare('SELECT * FROM pages WHERE id=?');
+
+		$stmt->bindParam(1, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 
@@ -1100,6 +1269,8 @@ class TMyCMS
 		/*---------------------------------------------------------*/
 
 		$stmt->closeCursor();
+
+		/*---------------------------------------------------------*/
 
 		die('{}');
 
@@ -1116,7 +1287,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->query("SELECT * FROM articles WHERE id='$id'");
+		$stmt = $this->pdo->prepare('SELECT * FROM articles WHERE id=?');
+
+		$stmt->bindParam(1, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 
@@ -1130,6 +1305,8 @@ class TMyCMS
 		/*---------------------------------------------------------*/
 
 		$stmt->closeCursor();
+
+		/*---------------------------------------------------------*/
 
 		die('{}');
 
@@ -1146,7 +1323,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$stmt = $this->pdo->query("SELECT * FROM menus WHERE id='$id'");
+		$stmt = $this->pdo->prepare('SELECT * FROM menus WHERE id=?');
+
+		$stmt->bindParam(1, $id);
+
+		$stmt->execute();
 
 		/*---------------------------------------------------------*/
 
@@ -1160,6 +1341,8 @@ class TMyCMS
 		/*---------------------------------------------------------*/
 
 		$stmt->closeCursor();
+
+		/*---------------------------------------------------------*/
 
 		die('{}');
 
@@ -1200,7 +1383,15 @@ class TMyCMS
 			$Q1 = $this->escapeSQL($q);
 			$Q2 = $this->escapeHTML($q);
 
-			$stmt = $this->pdo->query("SELECT alias, title FROM pages WHERE (alias='$Q1' OR title LIKE '%{$Q1}%' OR content LIKE '%{$Q1}%') AND visible!=0");
+			/*-------------------------------------------------*/
+
+			$stmt = $this->pdo->prepare('SELECT alias, title FROM pages WHERE (alias=? OR title LIKE ? OR content LIKE ?) AND visible!=0');
+
+			$stmt->bindParam(1, $Q1);
+			$stmt->bindParam(2, "%{$Q1}%");
+			$stmt->bindParam(3, "%{$Q1}%");
+
+			$stmt->execute();
 
 			while($line = $stmt->fetch())
 			{
@@ -1215,7 +1406,17 @@ class TMyCMS
 				$i++;
 			}
 
-			$stmt = $this->pdo->query("SELECT alias, title FROM articles WHERE (alias='$Q1' OR title LIKE '%{$Q1}%' OR content LIKE '%{$Q1}%') AND visible!=0");
+			$stmt->closeCursor();
+
+			/*-------------------------------------------------*/
+
+			$stmt = $this->pdo->prepare('SELECT alias, title FROM articles WHERE (alias=? OR title LIKE ? OR content LIKE ?) AND visible!=0');
+
+			$stmt->bindParam(1, $Q1);
+			$stmt->bindParam(2, "%{$Q1}%");
+			$stmt->bindParam(3, "%{$Q1}%");
+
+			$stmt->execute();
 
 			while($line = $stmt->fetch())
 			{
@@ -1229,6 +1430,10 @@ class TMyCMS
 
 				$i++;
 			}
+
+			$stmt->closeCursor();
+
+			/*-------------------------------------------------*/
 
 			return [
 				'path' => '<li class="active">Search</li>',
@@ -1328,8 +1533,13 @@ class TMyCMS
 			}
 			else
 			{
-				$stmt = $this->pdo->query("SELECT id, alias, title, content, DATE_FORMAT(date,'%m-%d-%Y') AS date FROM pages WHERE (id='$PAGES' OR alias='$PAGES') AND visible!=0");
+				$stmt = $this->pdo->prepare('SELECT id, alias, title, content, DATE_FORMAT(date,\'%m-%d-%Y\') AS date FROM pages WHERE (id=? OR alias=?) AND visible!=0');
 
+				$stmt->bindParam(1, $PAGES);
+				$stmt->bindParam(2, $PAGES);
+
+				$stmt->execute();
+	
 				while($line = $stmt->fetch())
 				{
 					return [
@@ -1339,6 +1549,8 @@ class TMyCMS
 						'date' => $line['date'],
 					];
 				}
+
+				$stmt->closeCursor();
 			}
 		}
 
@@ -1379,7 +1591,12 @@ class TMyCMS
 			}
 			else
 			{
-				$stmt = $this->pdo->query("SELECT id, alias, category, title, content, DATE_FORMAT(date,'%m-%d-%Y') AS date FROM articlesV WHERE (id='$ARTICLES' OR alias='$ARTICLES') AND visible!=0");
+				$stmt = $this->pdo->prepare('SELECT id, alias, category, title, content, DATE_FORMAT(date,\'%m-%d-%Y\') AS date FROM articlesV WHERE (id=? OR alias=?) AND visible!=0');
+
+				$stmt->bindParam(1, $ARTICLES);
+				$stmt->bindParam(2, $ARTICLES);
+
+				$stmt->execute();
 
 				while($line = $stmt->fetch())
 				{
@@ -1390,6 +1607,8 @@ class TMyCMS
 						'date' => $line['date'],
 					];
 				}
+
+				$stmt->closeCursor();
 			}
 		}
 
