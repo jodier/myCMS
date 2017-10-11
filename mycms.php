@@ -1347,14 +1347,15 @@ class TMyCMS
 			$result = '';
 			$Q1 = $this->getParam('q');
 			$Q2 = $this->escapeHTML($q);
+			$Q3 = "%{$Q1}%";
 
 			/*-------------------------------------------------*/
 
 			$stmt = $this->pdo->prepare('SELECT alias, title FROM pages WHERE (alias=? OR title LIKE ? OR content LIKE ?) AND visible!=0');
 
 			$stmt->bindParam(1, $Q1);
-			$stmt->bindParam(2, "%{$Q1}%");
-			$stmt->bindParam(3, "%{$Q1}%");
+			$stmt->bindParam(2, $Q3);
+			$stmt->bindParam(3, $Q3);
 
 			$stmt->execute();
 
@@ -1378,8 +1379,8 @@ class TMyCMS
 			$stmt = $this->pdo->prepare('SELECT alias, title FROM articles WHERE (alias=? OR title LIKE ? OR content LIKE ?) AND visible!=0');
 
 			$stmt->bindParam(1, $Q1);
-			$stmt->bindParam(2, "%{$Q1}%");
-			$stmt->bindParam(3, "%{$Q1}%");
+			$stmt->bindParam(2, $Q3);
+			$stmt->bindParam(3, $Q3);
 
 			$stmt->execute();
 
