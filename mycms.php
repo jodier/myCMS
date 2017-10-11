@@ -223,40 +223,6 @@ class TMyCMS
 
 	/*-----------------------------------------------------------------*/
 
-	public function escapeSQL($s)
-	{
-		$result = '';
-
-		for($i = 0; $i < strlen($s); $i++)
-		{
-			switch($c = $s[$i])
-			{
-				case '\'':
-					$result .= '\'\'';
-					break;
-
-				case "\\":
-					$result .= '\\\\';
-					break;
-
-				case "\n":
-					$result .= '\n';
-					break;
-
-				case "\r":
-					$result .= '\r';
-					break;
-
-				default:
-					$result .= $c;
-			}
-		}
-
-		return $result;
-	}
-
-	/*-----------------------------------------------------------------*/
-
 	public function escapeHTML($s)
 	{
 		$result = '';
@@ -472,9 +438,9 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$alias = $this->escapeSQL($this->getParam('categoryAlias'));
-		$title = $this->escapeSQL($this->getParam('categoryTitle'));
-		$rank = $this->escapeSQL($this->getParam('categoryRank'));
+		$alias = $this->getParam('categoryAlias');
+		$title = $this->getParam('categoryTitle');
+		$rank = $this->getParam('categoryRank');
 
 		if($alias === '' || $title === '' || $rank === '')
 		{
@@ -505,11 +471,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$id = $this->escapeSQL($this->getParam('updateCategory'));
-		$alias = $this->escapeSQL($this->getParam('categoryAlias'));
-		$title = $this->escapeSQL($this->getParam('categoryTitle'));
-		$rank = $this->escapeSQL($this->getParam('categoryRank'));
-		$visible = $this->escapeSQL($this->getParam('categoryVisible', '0'));
+		$id = $this->getParam('updateCategory');
+		$alias = $this->getParam('categoryAlias');
+		$title = $this->getParam('categoryTitle');
+		$rank = $this->getParam('categoryRank');
+		$visible = $this->getParam('categoryVisible', '0');
 
 		if($id === '' || $alias === '' || $title === '' || $rank === '')
 		{
@@ -542,7 +508,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$id = $this->escapeSQL($this->getParam('delCategory'));
+		$id = $this->getParam('delCategory');
 
 		/*---------------------------------------------------------*/
 
@@ -566,8 +532,8 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$alias = $this->escapeSQL($this->getParam('pageAlias'));
-		$title = $this->escapeSQL($this->getParam('pageTitle'));
+		$alias = $this->getParam('pageAlias');
+		$title = $this->getParam('pageTitle');
 
 		if($alias === '' || $title === '')
 		{
@@ -597,11 +563,11 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$id = $this->escapeSQL($this->getParam('updatePage'));
-		$alias = $this->escapeSQL($this->getParam('pageAlias'));
-		$title = $this->escapeSQL($this->getParam('pageTitle'));
-		$content = $this->escapeSQL($this->getParam('pageContent'));
-		$visible = $this->escapeSQL($this->getParam('pageVisible', '0'));
+		$id = $this->getParam('updatePage');
+		$alias = $this->getParam('pageAlias');
+		$title = $this->getParam('pageTitle');
+		$content = $this->getParam('pageContent');
+		$visible = $this->getParam('pageVisible', '0');
 
 		if($id === '' || $alias === '' || $title === '')
 		{
@@ -634,7 +600,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$id = $this->escapeSQL($this->getParam('delPage'));
+		$id = $this->getParam('delPage');
 
 		/*---------------------------------------------------------*/
 
@@ -658,9 +624,9 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$alias = $this->escapeSQL($this->getParam('articleAlias'));
-		$category = $this->escapeSQL($this->getParam('articleCategory'));
-		$title = $this->escapeSQL($this->getParam('articleTitle'));
+		$alias = $this->getParam('articleAlias');
+		$category = $this->getParam('articleCategory');
+		$title = $this->getParam('articleTitle');
 
 		if($alias === '' || $category === '' || $title === '')
 		{
@@ -691,12 +657,12 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$id = $this->escapeSQL($this->getParam('updateArticle'));
-		$alias = $this->escapeSQL($this->getParam('articleAlias'));
-		$category = $this->escapeSQL($this->getParam('articleCategory'));
-		$title = $this->escapeSQL($this->getParam('articleTitle'));
-		$content = $this->escapeSQL($this->getParam('articleContent'));
-		$visible = $this->escapeSQL($this->getParam('articleVisible', '0'));
+		$id = $this->getParam('updateArticle');
+		$alias = $this->getParam('articleAlias');
+		$category = $this->getParam('articleCategory');
+		$title = $this->getParam('articleTitle');
+		$content = $this->getParam('articleContent');
+		$visible = $this->getParam('articleVisible', '0');
 
 		if($id === '' || $alias === '' || $category === '' || $title === '')
 		{
@@ -730,7 +696,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$id = $this->escapeSQL($this->getParam('delArticle'));
+		$id = $this->getParam('delArticle');
 
 		/*---------------------------------------------------------*/
 
@@ -754,13 +720,13 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$alias = $this->escapeSQL($this->getParam('menuAlias'));
-		$category = $this->escapeSQL($this->getParam('menuCategory'));
-		$parent = $this->escapeSQL($this->getParam('menuParent'), '');
-		$title = $this->escapeSQL($this->getParam('menuTitle'));
-		$rank = $this->escapeSQL($this->getParam('menuRank'));
-		$page = $this->escapeSQL($this->getParam('menuPage'));
-		$link = $this->escapeSQL($this->getParam('menuLink'), '');
+		$alias = $this->getParam('menuAlias');
+		$category = $this->getParam('menuCategory');
+		$parent = $this->getParam('menuParent');
+		$title = $this->getParam('menuTitle');
+		$rank = $this->getParam('menuRank');
+		$page = $this->getParam('menuPage');
+		$link = $this->getParam('menuLink');
 
 		if($alias === '' || $category === '' || $title === '' || $rank === '' || $page === '')
 		{
@@ -836,15 +802,15 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$id = $this->escapeSQL($this->getParam('updateMenu'));
-		$alias = $this->escapeSQL($this->getParam('menuAlias'));
-		$category = $this->escapeSQL($this->getParam('menuCategory'));
-		$parent = $this->escapeSQL($this->getParam('menuParent'), '');
-		$title = $this->escapeSQL($this->getParam('menuTitle'));
-		$rank = $this->escapeSQL($this->getParam('menuRank'));
-		$page = $this->escapeSQL($this->getParam('menuPage'));
-		$link = $this->escapeSQL($this->getParam('menuLink'), '');
-		$visible = $this->escapeSQL($this->getParam('menuVisible', '0'));
+		$id = $this->getParam('updateMenu');
+		$alias = $this->getParam('menuAlias');
+		$category = $this->getParam('menuCategory');
+		$parent = $this->getParam('menuParent');
+		$title = $this->getParam('menuTitle');
+		$rank = $this->getParam('menuRank');
+		$page = $this->getParam('menuPage');
+		$link = $this->getParam('menuLink');
+		$visible = $this->getParam('menuVisible', '0');
 
 		if($id === '' || $alias === '' || $category === '' || $title === '' || $rank === '' || ($page === '' && $link === ''))
 		{
@@ -928,7 +894,7 @@ class TMyCMS
 
 		/*---------------------------------------------------------*/
 
-		$id = $this->escapeSQL($this->getParam('delMenu'));
+		$id = $this->getParam('delMenu');
 
 		/*---------------------------------------------------------*/
 
@@ -1379,8 +1345,7 @@ class TMyCMS
 		{
 			$i = 0;
 			$result = '';
-			$q = $this->getParam('q');
-			$Q1 = $this->escapeSQL($q);
+			$Q1 = $this->getParam('q');
 			$Q2 = $this->escapeHTML($q);
 
 			/*-------------------------------------------------*/
@@ -1505,7 +1470,6 @@ class TMyCMS
 		else if($this->hasParam('pages'))
 		{
 			$pages = $this->getParam('pages');
-			$PAGES = $this->escapeSQL($pages);
 
 			if($pages === '')
 			{
@@ -1535,8 +1499,8 @@ class TMyCMS
 			{
 				$stmt = $this->pdo->prepare('SELECT id, alias, title, content, DATE_FORMAT(date,\'%m-%d-%Y\') AS date FROM pages WHERE (id=? OR alias=?) AND visible!=0');
 
-				$stmt->bindParam(1, $PAGES);
-				$stmt->bindParam(2, $PAGES);
+				$stmt->bindParam(1, $pages);
+				$stmt->bindParam(2, $pages);
 
 				$stmt->execute();
 	
@@ -1561,7 +1525,6 @@ class TMyCMS
 		else if($this->hasParam('articles'))
 		{
 			$articles = $this->getParam('articles');
-			$ARTICLES = $this->escapeSQL($articles);
 
 			if($articles === '')
 			{
@@ -1593,8 +1556,8 @@ class TMyCMS
 			{
 				$stmt = $this->pdo->prepare('SELECT id, alias, category, title, content, DATE_FORMAT(date,\'%m-%d-%Y\') AS date FROM articlesV WHERE (id=? OR alias=?) AND visible!=0');
 
-				$stmt->bindParam(1, $ARTICLES);
-				$stmt->bindParam(2, $ARTICLES);
+				$stmt->bindParam(1, $articles);
+				$stmt->bindParam(2, $articles);
 
 				$stmt->execute();
 
