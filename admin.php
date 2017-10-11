@@ -794,7 +794,7 @@ else
 
 							<p><i class="fa fa-chevron-right"></i> <a href="admin.php?upgradeCMS">Upgrade CMS</a></p>
 
-							<p><i class="fa fa-chevron-right"></i> <a href="http://www.odier.eu/" target="_blank">By Jérôme ODIER</a></p>
+							<p><i class="fa fa-chevron-right"></i> <a href="#" target="_blank">By Jérôme ODIER</a></p>
 						</div>
 						<div class="col-md-6">
 							<p><i class="fa fa-chevron-right"></i> Force HTTPS: <br /><input type="checkbox" data-toggle="toggle" data-width="80" id="siteForceHTTPS" <?= isset($cms->config['force_https']) && $cms->config['force_https'] === '1' ? 'checked="checked"' : 'xxxxxxx="xxxxxxx"' ?> /></p>
