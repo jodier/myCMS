@@ -1052,22 +1052,10 @@ class TMyCMS
 
 		foreach($opts as $key => $val)
 		{
-			array_push($L, $key . '=?');
+			array_push($L, $key . '=\'' . str_replace('\'', '\'\'', $val) . '\'');
 		}
 
 		return count($L) > 0 ? ' WHERE ' . join($L, ' AND ') : '';
-	}
-
-	/*-----------------------------------------------------------------*/
-
-	private function _setupWhereClause($stmt, $opts)
-	{
-		$i = 1;
-
-		foreach($opts as $key => $val)
-		{
-			$stmt->bindParam($i++, $val);
-		}
 	}
 
 	/*-----------------------------------------------------------------*/
@@ -1077,8 +1065,6 @@ class TMyCMS
 		/*---------------------------------------------------------*/
 
 		$stmt = $this->pdo->prepare('SELECT * FROM categories' . $this->_buildWhereClause($opts) . ' ORDER BY rank, alias ASC');
-
-		$this->_setupWhereClause($stmt, $opts);
 
 		$stmt->execute();
 
@@ -1103,8 +1089,6 @@ class TMyCMS
 
 		$stmt = $this->pdo->prepare('SELECT * FROM pages' . $this->_buildWhereClause($opts) . ' ORDER BY alias ASC');
 
-		$this->_setupWhereClause($stmt, $opts);
-
 		$stmt->execute();
 
 		/*---------------------------------------------------------*/
@@ -1128,8 +1112,6 @@ class TMyCMS
 
 		$stmt = $this->pdo->prepare('SELECT * FROM articlesV' . $this->_buildWhereClause($opts) . ' ORDER BY category, alias ASC');
 
-		$this->_setupWhereClause($stmt, $opts);
-
 		$stmt->execute();
 
 		/*---------------------------------------------------------*/
@@ -1152,8 +1134,6 @@ class TMyCMS
 		/*---------------------------------------------------------*/
 
 		$stmt = $this->pdo->prepare('SELECT * FROM menusV' . $this->_buildWhereClause($opts) . ' ORDER BY parent, rank, alias ASC');
-
-		$this->_setupWhereClause($stmt, $opts);
 
 		$stmt->execute();
 
