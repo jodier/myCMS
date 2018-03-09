@@ -1488,7 +1488,7 @@ class TMyCMS
 				while($line = $stmt->fetch())
 				{
 					return [
-						'path' => "<li class="breadcrumb-item"><a href=\"/pages\">pages</a></li><li class=\"breadcrumb-item active\">{$line['alias']}</li>",
+						'path' => "<li class=\"breadcrumb-item\"><a href=\"/pages\">pages</a></li><li class=\"breadcrumb-item active\">{$line['alias']}</li>",
 						'title' => $line['title'],
 						'content' => (new Extension())->text($line['content']),
 						'date' => $line['date'],
@@ -1545,7 +1545,7 @@ class TMyCMS
 				while($line = $stmt->fetch())
 				{
 					return [
-						'path' => "<li class="breadcrumb-item"><a href=\"/articles\">articles</a></li><li class="breadcrumb-item"><a href=\"/categories/{$line['category']}\">{$line['category']}</a></li><li class=\"breadcrumb-item active\">{$line['alias']}</li>",
+						'path' => "<li class=\"breadcrumb-item\"><a href=\"/articles\">articles</a></li><li class=\"breadcrumb-item\"><a href=\"/categories/{$line['category']}\">{$line['category']}</a></li><li class=\"breadcrumb-item active\">{$line['alias']}</li>",
 						'title' => $line['title'],
 						'content' => (new Extension())->text($line['content']),
 						'date' => $line['date'],
